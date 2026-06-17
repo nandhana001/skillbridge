@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SkillBridge AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-cube logo-icon"></i>
+            <span>SkillBridge AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="signup.html" class="btn-primary-outline">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+        </div>
+    </nav>
+
+    <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+        <div class="glass-panel form-container" style="width: 100%; max-width: 450px;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Welcome Back</h2>
+                <p class="text-muted">Login to securely access your AI readiness dashboard.</p>
+            </div>
+
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" placeholder="name@company.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <div id="error-msg" class="text-warning hidden" style="margin-bottom: 1rem; font-size: 0.875rem;"></div>
+
+                <button type="submit" class="btn-primary"
+                    style="width: 100%; justify-content: center; margin-top: 1rem;">
+                    Sign In <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+            </form>
+
+            <p style="text-align: center; margin-top: 2rem; font-size: 0.875rem; color: var(--text-muted);">
+                Don't have an account? <a href="signup.html" style="color: var(--primary); text-decoration: none;">Sign
+                    up here</a>
+            </p>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            errorMsg.classList.add('hidden');
+            const submitBtn = e.target.querySelector('button');
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
+
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    window.location.href = 'index.html'; // Redirect to protected dashboard
+                } else {
+                    errorMsg.textContent = data.msg || 'Login failed';
+                    errorMsg.classList.remove('hidden');
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Server connection error';
+                errorMsg.classList.remove('hidden');
+            } finally {
+                submitBtn.innerHTML = 'Sign In <i class="fa-solid fa-right-to-bracket"></i>';
+            }
+        });
+    </script>
+</body>
+
+</html>

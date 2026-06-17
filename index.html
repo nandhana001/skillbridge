@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillBridge AI - Navigate Your Career in the AI Era</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-cube logo-icon"></i>
+            <span>SkillBridge AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#home">Mission</a>
+            <a href="#home" class="btn-primary-outline"
+                onclick="document.getElementById('start-btn').click(); return false;">Try Demo</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="badge">✨ Future-Proof Your Career</div>
+            <h1>Bridging the <span class="gradient-text">Skill Gap</span><br>in the Age of AI</h1>
+            <p>Discover precisely what skills you need to stay relevant. Our AI analyzes your background against
+                real-time industry demands to build your personalized learning path.</p>
+            <button class="btn-primary" id="start-btn" onclick="window.location.href='signup.html'">Start Your
+                Analysis <i class="fa-solid fa-arrow-right"></i></button>
+        </section>
+
+        <!-- Dashboard Actions (Log out) -->
+        <div style="text-align: right; margin-bottom: 2rem;">
+            <button id="logout-btn" class="btn-secondary"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                Logout</button>
+        </div>
+
+        <!-- Dynamic Assessment Section -->
+        <section class="assessment-section hidden" id="assessment">
+            <div class="glass-panel form-container">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h2>Skill Assessment</h2>
+                    <p class="text-muted">Let's gauge your current proficiency level.</p>
+                </div>
+
+                <form id="quiz-form">
+                    <div id="quiz-container">
+                        <!-- Questions injected here by JS -->
+                    </div>
+                    <button type="submit" class="btn-primary"
+                        style="width: 100%; justify-content: center; margin-top: 2rem;">
+                        Submit & Analyze <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <section class="loading-section" id="loading">
+            <div class="loader">
+                <div class="spinner"></div>
+                <h3 id="loading-text">Loading your profile...</h3>
+            </div>
+        </section>
+
+        <!-- Results Dashboard -->
+        <section class="results-section hidden" id="results">
+            <div class="dashboard-header">
+                <h2>Your AI Readiness Report</h2>
+                <div class="score-card">
+                    <div class="score-circle">
+                        <span id="final-score">0</span><span class="total">/100</span>
+                    </div>
+                    <div>
+                        <h3>Future-Readiness Score</h3>
+                        <p>Based on current market requirements</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="glass-panel dashboard-card">
+                    <h3><i class="fa-solid fa-triangle-exclamation text-warning"></i> Identified Gaps</h3>
+                    <ul class="gap-list" id="gap-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <div class="glass-panel dashboard-card">
+                    <h3><i class="fa-solid fa-rocket text-success"></i> Recommended Path</h3>
+                    <div class="courses-list" id="courses-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-footer">
+                <button class="btn-primary-outline" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i>
+                    Recalculate Path</button>
+            </div>
+        </section>
+
+        <!-- Course Test Modal -->
+        <div id="course-modal" class="hidden"
+            style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+            <div class="glass-panel"
+                style="width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative;">
+                <button type="button" onclick="closeCourseModal()"
+                    style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                <h2 id="modal-course-title" style="margin-bottom: 0.5rem; font-size: 1.5rem;">Course Test</h2>
+                <p class="text-muted" style="margin-bottom: 2rem;">Pass this quick quiz to add this course to your
+                    completed list and boost your Readiness Score.</p>
+                <form id="course-test-form">
+                    <div id="course-test-container">
+                        <!-- Mini quiz questions injected here -->
+                    </div>
+                    <div id="course-test-error" class="text-warning hidden"
+                        style="margin-bottom: 1rem; font-size: 0.875rem;"></div>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Submit Test
+                        <i class="fa-solid fa-check"></i></button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SkillBridge AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-cube logo-icon"></i>
+            <span style="cursor: pointer" onclick="window.location.href='index.html'">SkillBridge AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="login.html" class="btn-primary-outline">Log In <i class="fa-solid fa-right-to-bracket"></i></a>
+        </div>
+    </nav>
+
+    <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh; padding: 4rem 1rem;">
+        <div class="glass-panel form-container" style="width: 100%; max-width: 500px;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Create Account</h2>
+                <p class="text-muted">Start mapping your future in the AI era.</p>
+            </div>
+
+            <form id="signup-form">
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password * (Min 6 characters)</label>
+                    <input type="password" id="password" minlength="6" required>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;">
+
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <h4 class="text-muted">Professional Baseline</h4>
+                </div>
+
+                <div class="input-group">
+                    <label for="status">Current Status *</label>
+                    <select id="status" required>
+                        <option value="" disabled selected>Select... </option>
+                        <option value="student">Student</option>
+                        <option value="fresh_grad">Fresh Graduate</option>
+                        <option value="professional">Professional</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="profession">Field / Profession *</label>
+                    <input type="text" id="profession" placeholder="E.g. Software, Marketing, Design" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="year">Graduation Year *</label>
+                    <input type="number" id="year" min="1950" max="2030" placeholder="E.g. 2020" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="skills">Current Core Skills *</label>
+                    <input type="text" id="skills" placeholder="E.g. Python, SEO, UI/UX (comma-separated)" required>
+                </div>
+
+                <div id="error-msg" class="text-warning hidden" style="margin-bottom: 1rem; font-size: 0.875rem;"></div>
+
+                <button type="submit" class="btn-primary"
+                    style="width: 100%; justify-content: center; margin-top: 1rem;">
+                    Create Account Securely <i class="fa-solid fa-shield-halved"></i>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const status = document.getElementById('status').value;
+            const profession = document.getElementById('profession').value;
+            const year = parseInt(document.getElementById('year').value);
+            const skills = document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s);
+            const errorMsg = document.getElementById('error-msg');
+
+            errorMsg.classList.add('hidden');
+            const submitBtn = e.target.querySelector('button');
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registering...';
+
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, status, profession, year, skills })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token); // Store JWT securely
+                    window.location.href = 'index.html'; // Proceed to assessment
+                } else {
+                    errorMsg.textContent = data.msg || 'Registration failed';
+                    errorMsg.classList.remove('hidden');
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Server connection error';
+                errorMsg.classList.remove('hidden');
+            } finally {
+                submitBtn.innerHTML = 'Create Account Securely <i class="fa-solid fa-shield-halved"></i>';
+            }
+        });
+    </script>
+</body>
+
+</html>
